@@ -1,0 +1,5 @@
+../Core/Src/utils.c:10:13:StatusCodeToString	16	static
+../Core/Src/utils.c:24:10:ParseUint16BE	16	static
+../Core/Src/utils.c:29:10:ParseUint32BE	16	static
+../Core/Src/utils.c:34:11:ParseFloat32BE	24	static
+../Core/Src/utils.c:48:11:ParseFloat64BE	32	static
