@@ -1,0 +1,9 @@
+../Core/Src/anti_spoofing.c:28:14:vec3_norm_f	1
+../Core/Src/anti_spoofing.c:33:15:vec3_dist_d	1
+../Core/Src/anti_spoofing.c:41:15:gnss_time_sec	1
+../Core/Src/anti_spoofing.c:46:14:wrap_pi_f	3
+../Core/Src/anti_spoofing.c:53:6:AntiSpoofing_Init	2
+../Core/Src/anti_spoofing.c:101:13:latlon_to_local_en	3
+../Core/Src/anti_spoofing.c:121:13:kalman_predict_heading_pos	1
+../Core/Src/anti_spoofing.c:141:14:kalman_gate_and_update	5
+../Core/Src/anti_spoofing.c:188:6:AntiSpoofing_Update	34

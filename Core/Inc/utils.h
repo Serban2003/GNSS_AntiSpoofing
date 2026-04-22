@@ -19,9 +19,12 @@ typedef enum
 	OK = 0,
 	ERR_NULL_PTR,
 	ERR_LEN_TOO_SMALL,
+	ERR_OVERFLOW,
     ERR_INVALID_STREAM_ID,
 	ERR_INVALID_PACKET,
-	ERR_UNSUPPORTED_PACKET
+	ERR_UNSUPPORTED_PACKET,
+	START_PARSING,
+	PARSING_DATA
 } StatusCode_t;
 
 const char *StatusCodeToString(StatusCode_t status);

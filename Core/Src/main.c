@@ -18,6 +18,12 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "utils.h"
+#include "parser.h"
+#include "NOVATEL_OEM615.h"
+#include "GENERIC_IMU.h"
+#include "navigation_solution.h"
+#include "anti_spoofing.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -43,6 +49,9 @@
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
+NavigationInput_t g_navigation_input = {0};
+AntiSpoofingState_t g_anti_spoofing_state = {0};
+static uint8_t g_rx_byte;
 
 /* USER CODE END PV */
 
@@ -90,13 +99,28 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_UART_Receive_IT(&huart2, &g_rx_byte, 1);
+  AntiSpoofing_Init(&g_anti_spoofing_state);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  uint8_t gnss_updated = 0U;
+
+	  if(g_parser_status.novatel_oem615_ready){
+	  		  g_parser_status.novatel_oem615_ready = 0;
+	  		  NOVATEL_OEM615_ParseTelemetry(novatel_oem615_frame, NOVATEL_OEM615_DATA_TLM_LEN, &g_navigation_input.novatel_oem615_tlm);
+	  	  }
+	  if(g_parser_status.generic_imu_ready){
+		  g_parser_status.generic_imu_ready = 0;
+		  GENERIC_IMU_ParseTelemetry(generic_imu_frame, GENERIC_IMU_DATA_TLM_LEN, &g_navigation_input.generic_imu_tlm);
+	  }
+
+	  if (gnss_updated) {
+		  AntiSpoofing_Update(&g_anti_spoofing_state, &g_navigation_input);
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -223,7 +247,14 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    if (huart->Instance == USART2)
+    {
+    	parseRxData(g_rx_byte);
+        HAL_UART_Receive_IT(&huart2, &g_rx_byte, 1);
+    }
+}
 /* USER CODE END 4 */
 
 /**

@@ -21,6 +21,7 @@ StatusCode_t NOVATEL_OEM615_ParseTelemetry(const uint8_t *buf, uint32_t len, NOV
 		return ERR_INVALID_STREAM_ID;
 
 	index = CCSDS_HEADER_LEN;
+	telemetry->GPS_WEEKS     = ParseUint16BE(&buf[index]);  index += 2;
 	telemetry->GPS_SECONDS   = ParseUint32BE(&buf[index]);  index += 4;
 	telemetry->GPS_FRAC_SECS = ParseFloat64BE(&buf[index]); index += 8;
 

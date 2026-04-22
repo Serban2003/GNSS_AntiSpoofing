@@ -11,10 +11,11 @@
 #include "utils.h"
 #include "CCSDS.h"
 
-#define NOVATEL_OEM615_DATA_TLM_LEN 86U
+#define NOVATEL_OEM615_DATA_TLM_LEN 90U
 
 typedef struct {
 	CCSDS_HEADER_t CCSDS_HEADER; // CCSDS Header
+	uint16_t GPS_WEEKS; // GPS Weeks
 	uint32_t GPS_SECONDS; // GPS Seconds into the Week
 	float64_t GPS_FRAC_SECS; // GPS Fractions of a Second
 	float64_t ECEF_X; // ECEF Position X (meters)

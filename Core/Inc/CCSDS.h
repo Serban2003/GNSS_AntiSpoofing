@@ -12,6 +12,14 @@
 
 #define CCSDS_HEADER_LEN 16U
 
+#define NOVATEL_OEM615_DATA_TLM   0x0871U
+#define GENERIC_IMU_DATA_TLM      0x0926U
+
+#define NOVATEL_OEM615_DATA_TLM_P1 0x08U
+#define NOVATEL_OEM615_DATA_TLM_P2 0x71U
+#define GENERIC_IMU_DATA_TLM_P1    0x09U
+#define GENERIC_IMU_DATA_TLM_P2    0x26U
+
 typedef struct {
 	uint16_t CCSDS_STREAMID; // CCSDS Packet Identification
 	uint16_t CCSDS_SEQUENCE; // CCSDS Packet Sequence Control
@@ -20,11 +28,6 @@ typedef struct {
 	uint16_t CCSDS_SUBSECS; // CCSDS Telemetry Secondary Header (subseconds)
 	uint32_t CCSDS_SPARE; // GPS Week Number
 } CCSDS_HEADER_t;
-
-typedef enum {
-	NOVATEL_OEM615_DATA_TLM = 0x0871, // Packet Identifier for telemetry data of NOVATEL_OEM615
-	GENERIC_IMU_DATA_TLM = 0x0926 // Packet Identifier for telemetry data of GENERIC_IMU
-} CCSDS_StreamId_t;
 
 StatusCode_t CCSDS_ParseHeader(const uint8_t *buf, uint32_t len, CCSDS_HEADER_t *header);
 

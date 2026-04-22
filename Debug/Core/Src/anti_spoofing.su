@@ -1,0 +1,9 @@
+../Core/Src/anti_spoofing.c:28:14:vec3_norm_f	24	static
+../Core/Src/anti_spoofing.c:33:15:vec3_dist_d	88	static
+../Core/Src/anti_spoofing.c:41:15:gnss_time_sec	24	static
+../Core/Src/anti_spoofing.c:46:14:wrap_pi_f	16	static
+../Core/Src/anti_spoofing.c:53:6:AntiSpoofing_Init	16	static
+../Core/Src/anti_spoofing.c:101:13:latlon_to_local_en	112	static
+../Core/Src/anti_spoofing.c:121:13:kalman_predict_heading_pos	40	static
+../Core/Src/anti_spoofing.c:141:14:kalman_gate_and_update	80	static
+../Core/Src/anti_spoofing.c:188:6:AntiSpoofing_Update	144	static
