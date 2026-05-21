@@ -18,16 +18,15 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
 #include "utils.h"
 #include "parser.h"
 #include "NOVATEL_OEM615.h"
 #include "GENERIC_IMU.h"
 #include "navigation_solution.h"
 #include "anti_spoofing.h"
-
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,6 +46,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
+UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
 NavigationInput_t g_navigation_input = {0};
@@ -59,6 +59,7 @@ static uint8_t g_rx_byte;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
+static void MX_USART3_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -98,6 +99,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_UART_Receive_IT(&huart2, &g_rx_byte, 1);
   AntiSpoofing_Init(&g_anti_spoofing_state);
@@ -107,20 +109,18 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  uint8_t gnss_updated = 0U;
-
 	  if(g_parser_status.novatel_oem615_ready){
-	  		  g_parser_status.novatel_oem615_ready = 0;
-	  		  NOVATEL_OEM615_ParseTelemetry(novatel_oem615_frame, NOVATEL_OEM615_DATA_TLM_LEN, &g_navigation_input.novatel_oem615_tlm);
-	  	  }
+		  g_parser_status.novatel_oem615_ready = 0;
+		  NOVATEL_OEM615_ParseTelemetry(novatel_oem615_frame, NOVATEL_OEM615_DATA_TLM_LEN, &g_navigation_input.novatel_oem615_tlm);
+
+		  AntiSpoofing_Update(&g_anti_spoofing_state, &g_navigation_input);
+		  AntiSpoofing_SendDebugUart3(&huart3, &g_anti_spoofing_state);
+	  }
 	  if(g_parser_status.generic_imu_ready){
 		  g_parser_status.generic_imu_ready = 0;
 		  GENERIC_IMU_ParseTelemetry(generic_imu_frame, GENERIC_IMU_DATA_TLM_LEN, &g_navigation_input.generic_imu_tlm);
 	  }
 
-	  if (gnss_updated) {
-		  AntiSpoofing_Update(&g_anti_spoofing_state, &g_navigation_input);
-	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -204,6 +204,39 @@ static void MX_USART2_UART_Init(void)
   /* USER CODE BEGIN USART2_Init 2 */
 
   /* USER CODE END USART2_Init 2 */
+
+}
+
+/**
+  * @brief USART3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART3_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART3_Init 0 */
+
+  /* USER CODE END USART3_Init 0 */
+
+  /* USER CODE BEGIN USART3_Init 1 */
+
+  /* USER CODE END USART3_Init 1 */
+  huart3.Instance = USART3;
+  huart3.Init.BaudRate = 115200;
+  huart3.Init.WordLength = UART_WORDLENGTH_8B;
+  huart3.Init.StopBits = UART_STOPBITS_1;
+  huart3.Init.Parity = UART_PARITY_NONE;
+  huart3.Init.Mode = UART_MODE_TX_RX;
+  huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart3.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART3_Init 2 */
+
+  /* USER CODE END USART3_Init 2 */
 
 }
 
