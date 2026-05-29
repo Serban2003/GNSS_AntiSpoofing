@@ -6,8 +6,8 @@ import serial
 
 
 # ================= CONFIG =================
-NOVATEL_CSV = "2026_05_17_10_31_26_tlm_spoofed\\novatel_oem615.csv"
-IMU_CSV = "2026_05_17_10_31_26_tlm_spoofed\\generic_imu.csv"
+NOVATEL_CSV = "2026_05_26_06_29_24_tlm\\novatel_oem615_all.csv"
+IMU_CSV = "2026_05_26_06_29_24_tlm\\generic_imu_all.csv"
 
 #NOVATEL_CSV = "2026_05_17_10_13_07_tlm\\novatel_oem615.csv"
 #IMU_CSV = "2026_05_17_10_13_07_tlm\\generic_imu.csv"
@@ -25,7 +25,7 @@ NOVATEL_ENDIAN = ">"
 IMU_ENDIAN = ">"
 
 PRINT_HEX = True
-LOOP_DATA = True
+LOOP_DATA = False
 # ==========================================
 
 
@@ -145,6 +145,7 @@ def main():
             if now >= next_novatel_time:
                 row = novatel_rows[novatel_index]
                 pkt = build_novatel_packet(row)
+
                 send_packet(ser, pkt, "NOVATEL")
 
                 novatel_index += 1

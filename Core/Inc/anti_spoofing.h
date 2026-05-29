@@ -47,8 +47,6 @@ typedef struct {
     float frozen_position_time_s;
 
     uint8_t initialized;
-    uint8_t ref_initialized;
-    uint8_t kf_initialized;
 
     uint32_t last_imu_tick;
 
@@ -58,13 +56,7 @@ typedef struct {
     uint8_t imu_mismatch_flag;
     uint8_t stale_gnss_flag;
     uint8_t heading_mismatch_flag;
-    uint8_t stationary_spoof_flag;
-    uint8_t innovation_gate_flag;
-    uint8_t gnss_rejected_flag;
     uint8_t frozen_position_flag;
-
-    float kf_x[3];
-    float kf_p_diag[3];
 
     float risk_score;
     GnssTrustState_t state;
