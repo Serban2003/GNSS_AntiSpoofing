@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 # ================= CONFIG =================
-BIN_FILE = "2026_05_17_10_31_26_tlm.bin"
+BIN_FILE = "2026_05_26_06_19_24_tlm.bin"
 OUT_DIR = "out"
 
 # Use "<" for LITTLE_ENDIAN, ">" for BIG_ENDIAN
